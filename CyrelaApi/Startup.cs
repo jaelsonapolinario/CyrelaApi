@@ -1,7 +1,9 @@
+using CyrelaApi.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -37,6 +39,11 @@ namespace CyrelaApi
                         Description = "Projeto FIAP Cyrela API",
                     });
             });
+
+            services.AddDbContext<CyrelaDBDataContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("SettingsDataDB"));
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -62,7 +69,7 @@ namespace CyrelaApi
             app.UseSwaggerUI(c =>
             {
                 c.RoutePrefix = "swagger";
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo JWT Api");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "FIAP CYRELA API");
             });
         }
     }
